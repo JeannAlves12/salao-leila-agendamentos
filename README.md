@@ -1,82 +1,62 @@
-# Cabeleleila Leila Salão de Beleiza - Sistema de Agendamentos
+# Cabeleleila Leila — Sistema de Agendamentos
 
-## Sobre o Projeto
-Este sistema foi desenvolvido como solução para o salão "Cabeleleila Leila", permitindo que clientes realizem agendamentos online de serviços de beleza, visualizem seus históricos e façam alterações. Além disso, o sistema conta com um painel gerencial exclusivo para a administração do salão.
+🇬🇧 **Summary:** Django web app for a beauty salon: clients book multiple services online, and the owner manages everything in a dashboard. Includes a 48h change-lock rule, same-week booking suggestions and unit tests. Built as a technical challenge for a selection process.
 
-## Tecnologias Utilizadas
-* **Backend:** Python e Django
-* **Banco de Dados:** SQLite3 (Padrão do Django, ideal para facilitar a execução local)
-* **Frontend:** HTML5, CSS3, e Template Engine do Django
-* **Testes:** `unittest` nativo do Django
-* **Padronização de Código:** Flake8 (PEP 8)
+🇧🇷 Sistema web em Django desenvolvido como **desafio técnico de um processo seletivo**. Permite que clientes agendem serviços online, vejam o histórico e alterem agendamentos, e dá à dona do salão um painel gerencial exclusivo.
 
-## Como Rodar o Projeto na Sua Máquina
+## Funcionalidades
 
-Siga o passo a passo abaixo para executar o projeto localmente:
+- **Agendamento de múltiplos serviços** na mesma solicitação
+- **Regra de alteração (48h):** o cliente só cancela ou edita pelo sistema com mais de 48h de antecedência; abaixo disso, o sistema bloqueia e orienta a ligar para o salão
+- **Sugestão de data:** se o cliente já tem agendamento na mesma semana, o sistema sugere concentrar os serviços no mesmo dia
+- **Painel gerencial:** a conta "Staff" (dona) pode alterar status, confirmar agendamentos, ignorar a regra das 48h e ver métricas
+- **Testes unitários** para as regras de negócio (validação de data e sugestão de agendamento)
 
-1. **Clone o repositório:**
-   ```bash
-   git clone https://github.com/JeannAlves12/salao_leila
-   cd salao_leila
-   ```
-   
-2. **Crie e ative o ambiente virtual:**
-   * No Windows:
-   ```bash
-   python -m venv venv
-   venv\Scripts\activate
-   ```
-   * No Linux/Mac:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate
-   ```
-   
-3. **Instale as dependências:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-   
-4. **Aplique as migrações no banco de dados:**
-   ```bash
-   python manage.py migrate
-   ```
-   
-5. **Criar um usuário Administrador/Dono(Neste caso a Leila)**
-   * passo importante para conseguir acessar a visão de gerncia do sistema.
-   ```bash
-   python manage.py createsuperuser
-   ```
-   ****Siga os passos na tela para definir usuário, email e senha.****
+## Tecnologias
 
-6. Inicie o servidor local:
-   ```bash
-   python manage.py runserver
-   ```
-   ****O sistema estará disponível no seu navegador no endereço: (http://127.0.0.1:8000/)****
+| Camada | Tecnologia |
+|---|---|
+| Back-end | Python, Django |
+| Banco de dados | SQLite3 (padrão do Django, facilita rodar localmente) |
+| Front-end | HTML5, CSS3, Django Template Engine |
+| Testes | `unittest` (nativo do Django) |
+| Padronização | Flake8 (PEP 8) |
 
-## Observações e Funcionalidades Desenvolvidas
+## Como rodar
 
-O sistema contempla todos os requisitos fundamentais e diferenciais solicitados: 
+```bash
+git clone https://github.com/JeannAlves12/salao-leila-agendamentos
+cd salao-leila-agendamentos
 
-* **Gestão de Agendamentos:** Clientes podem agendar múltiplos serviços ao mesmo tempo.
-* **Regra de Alteração (2 Dias):** Implementada trava de segurança. O cliente só consegue cancelar ou editar o agendamento via sistema com mais de 48h de antecedência. Menos do que isso, o sistema bloqueia e orienta a ligar para o salão.
-* **Sugestão Inteligente de Data:** Caso o cliente tente agendar um novo serviço, o sistema verifica se ele já possui outro agendamento na mesma semana e sugere concentrar os serviços no mesmo dia.
-* **Painel Gerencial:** A conta com privilégios de "Staff" (Dona) tem acesso a um dashboard exclusivo. Por lá, ela consegue burlar a regra dos 2 dias, alterar status dos serviços, confirmar agendamentos e ver métricas.
-* **Arquitetura Limpa:** As views foram separadas modularmente por contexto (Cliente, Gerência, Autenticação, Serviços) para facilitar a manutenção.
-* **Testes Unitários:** O projeto conta com testes unitários cobrindo as regras de negócio cruciais de validação de data e sugestão de agendamento (Para testar, rode python manage.py test).
+# ambiente virtual
+python -m venv venv
+venv\Scripts\activate          # Windows
+# source venv/bin/activate     # Linux/Mac
 
-## Notas de Desenvolvimento e Decisões Arquiteturais
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py createsuperuser   # cria a conta da dona (acesso ao painel gerencial)
+python manage.py runserver
+```
 
-Para garantir a manutenibilidade, a transparência e a escalabilidade do código, tomei as seguintes decisões técnicas durante o desenvolvimento:
+Acesse: http://127.0.0.1:8000/
 
-* **Arquitetura MVT (Django):** O projeto foi estruturado seguindo o padrão MVT (Model-View-Template) do Django, que é a variação do framework para o clássico MVC. Optei por focar nessa arquitetura e nas ferramentas nativas do Django por ser o ecossistema onde me sinto mais confiante em desenvolver e entregar uma solução robusta dentro do prazo.
-* **Foco no Backend e Uso de Ferramentas:** Como eu tenho um pouco mais de domínio na lógica do backend, utilizei ferramentas como apoio para a estruturação e estilização das páginas em HTML (área onde tenho menos prática) e também para auxiliar na resolução de erros pontuais durante o código. 
-* **Isolamento de Regras de Negócio:** As lógicas mais complexas (como a trava de 2 dias e a sugestão de agendamentos na mesma semana) foram extraídas para um arquivo isolado (`services.py`). Isso evita que as *Views* e os *Models* fiquem sobrecarregados (Fat Models / Fat Views) e facilita a aplicação de testes unitários.
-* **Modularização das Views:** O projeto não utiliza um único arquivo `views.py` gigante. As rotas foram separadas em (`client_views.py`, `owner_views.py`, `auth_views.py`, etc.), tornando a navegação pelo projeto muito mais simples e fácil de entender.
-* **Uso de FBVs vs CBVs:** Optei por construir o sistema utilizando *Function-Based Views (FBVs)* para manter o fluxo de dados o mais explícito e legível possível. No entanto, por curiosidade pesquisei como ficaria a arquitetura com *Class-Based Views (CBVs)* no futuro. Por isso a existência da pasta (`cbv`) dentro de (`appointments`). 
+Para rodar os testes: `python manage.py test`
 
+## Estrutura
 
-## Pasta ('evidencias')
+```
+salao-leila-agendamentos/
+├── appointments/   # app principal (views, models, services.py, testes)
+│   └── cbv/        # estudo de Class-Based Views (exploração futura)
+├── setup/          # configurações do projeto Django
+└── evidencias/     # prints das telas pedidos para avaliação
+```
 
-Contém imagens pedidas para avaliação.
+## Decisões de arquitetura
+
+- **MVT do Django:** foquei no ecossistema onde me sinto mais confiante, para entregar dentro do prazo.
+- **Regras de negócio isoladas em `services.py`:** a trava de 48h e a sugestão de data ficam fora de Views e Models, o que evita "fat views/models" e facilita testar.
+- **Views modulares:** `client_views.py`, `owner_views.py`, `auth_views.py` etc., em vez de um único `views.py` gigante.
+- **FBVs em vez de CBVs:** para deixar o fluxo de dados explícito e legível. Pesquisei CBVs por curiosidade, daí a pasta `cbv`.
+- **Uso de IA:** como tenho mais domínio do back-end, usei IA como apoio na estruturação/estilização do HTML (onde tenho menos prática) e em erros pontuais. A lógica de negócio é minha.
